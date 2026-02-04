@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inspección Flota</title>
+  <meta name="theme-color" content="#0b6b36" />
+  <link rel="manifest" href="./manifest.json" />
+  <style>
+    body{margin:0;font-family:system-ui,Arial;background:#0b6b36;color:#fff}
+    .wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;text-align:center}
+    .card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:18px;max-width:520px;width:100%}
+    .logo{width:92px;height:92px;border-radius:22px;box-shadow:0 10px 26px rgba(0,0,0,.25);margin:0 auto 12px;object-fit:cover;background:#fff}
+    h1{margin:8px 0 6px;font-size:22px}
+    .small{opacity:.9;font-size:14px;line-height:1.35}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    button,a{flex:1;min-width:160px;border:0;border-radius:14px;padding:14px 12px;font-weight:900;font-size:16px;cursor:pointer;text-decoration:none;text-align:center}
+    .btnOpen{background:#111827;color:#fff}
+    .btnInstall{background:#22c55e;color:#063b1a;display:none}
+    .hint{margin-top:12px;font-size:13px;opacity:.9}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <img class="logo" src="./icon-192.png" alt="icono">
+      <h1>Inspección Flota</h1>
+      <div class="small">Instálala como app (icono) y ábrela en 1 toque.</div>
+
+      <div class="row">
+        <a class="btnOpen" id="openBtn" href="#">ABRIR APP</a>
+        <button class="btnInstall" id="installBtn">INSTALAR APP</button>
+      </div>
+
+      <div class="hint" id="hint"></div>
+    </div>
+  </div>
+
+  <script>
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwmaimFH0tJ_CSp4_Ebp_d21HSWDJzOkYNWH0P0WGudXayj9Zcuyr2XJFCNGgHQ1QmbkA/exec";
+    document.getElementById('openBtn').href = WEBAPP_URL;
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('installBtn');
+    const hint = document.getElementById('hint');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
+      hint.textContent = "Pulsa INSTALAR APP para crear el icono.";
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.style.display = 'none';
+      hint.textContent = "Si no se instaló, usa menú ⋮ → Añadir a pantalla de inicio.";
+    });
+
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (isIOS) {
+      hint.innerHTML = 'En iPhone: botón <b>Compartir</b> → <b>Añadir a pantalla de inicio</b>.';
+    }
+  </script>
+</body>
+</html>
