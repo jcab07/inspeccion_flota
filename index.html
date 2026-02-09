@@ -41,7 +41,7 @@
     document.getElementById('openBtn').href = WEBAPP_URL;
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js');
+      navigator.serviceWorker.register('./sw.js?v=3');
     }
 
     let deferredPrompt = null;
