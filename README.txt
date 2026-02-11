@@ -5,4 +5,4 @@ Inspección Flota (PWA launcher)
 3) Abre la URL de GitHub Pages: verás el botón INSTALAR APP (Android/Chrome) y ABRIR APP.
 
 WebApp destino:
-https://script.google.com/macros/s/AKfycbyKAuETbnUNmTqW1cp4JNgo5Yx0hnGH0rVdX170rN5AyuUPa9h1PHlJH1q8YFHaeaiOFQ/exec
+https://script.google.com/macros/s/AKfycbzVXh66c1a3KkHkbXr6cqU1HHsmAoHqG2TPGa_8JPzb2X7lnDs6gvWTpl02_GKpBfgwrA/exec
